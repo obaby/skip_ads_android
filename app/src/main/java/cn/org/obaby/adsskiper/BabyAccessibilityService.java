@@ -62,7 +62,7 @@ public class BabyAccessibilityService extends AccessibilityService {
      */
     @SuppressLint("LongLogTag")
     private void SaveBitmapToLocal(Bitmap bmp) {
-        String strSavePath = getCacheDir().getAbsolutePath() + File.separator + java.util.UUID.randomUUID().toString() + ".jpg";
+        String strSavePath = getExternalCacheDir().getAbsolutePath() + File.separator + java.util.UUID.randomUUID().toString() + ".jpg";
         try {
             File f = new File(strSavePath);
             if (f.createNewFile()) {
