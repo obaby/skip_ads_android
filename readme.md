@@ -22,4 +22,10 @@ https://blog.csdn.net/qq_38499859/article/details/90523283
 https://juejin.cn/post/6844903589127651335  
 https://stackoverflow.com/questions/2661536/how-to-programmatically-take-a-screenshot-on-android  
 https://pytorch.org  
-https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_network
+https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_network  
+
+https://github.com/goodbranch/ScreenCapture
+https://github.com/tyhjh/ScreenShot
+https://www.jianshu.com/p/8a428fb45098
+https://github.com/BruceWind/AndroidScreenShot_SysApi
+https://www.jianshu.com/p/4ae89e1fb36a

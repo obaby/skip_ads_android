@@ -1,11 +1,18 @@
 package cn.org.obaby.adsskiper;
 
+import static com.yorhp.recordlibrary.ScreenRecordActivity.REQUEST_MEDIA_PROJECTION;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.preference.CheckBoxPreference;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -43,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        requestScreenShot();
     }
 
     @Override
@@ -72,5 +81,36 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    /**
+     * 申请屏幕录取权限
+     */
+    private void requestScreenShot() {
+        startActivityForResult(
+                ((MediaProjectionManager) this.getSystemService("media_projection")).createScreenCaptureIntent(),
+                REQUEST_MEDIA_PROJECTION);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_MEDIA_PROJECTION: {
+                if (resultCode == -1 && data != null) {
+                    ScreenShotter.getInstance()
+                            .setMediaProjection(getMediaProjectionManager()
+                                    .getMediaProjection(Activity.RESULT_OK, data));
+                } else {
+
+                }
+            }
+        }
+    }
+
+    private MediaProjectionManager getMediaProjectionManager() {
+
+        return (MediaProjectionManager) getSystemService(
+                Context.MEDIA_PROJECTION_SERVICE);
     }
 }

@@ -3,4 +3,6 @@
 
     android:accessibilityFeedbackType="feedbackSpoken"
     android:canRetrieveWindowContent="true"
-    android:notificationTimeout="1000"/>
+    android:notificationTimeout="1000"
+    android:canPerformGestures="true"
+    android:description="@string/app_description"/>
