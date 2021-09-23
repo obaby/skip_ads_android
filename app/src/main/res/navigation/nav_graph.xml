@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="cn.org.obaby.adsskiper.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_first">
 
         <action
