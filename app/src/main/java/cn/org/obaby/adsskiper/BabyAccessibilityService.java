@@ -19,15 +19,12 @@ public class BabyAccessibilityService extends AccessibilityService {
     @SuppressLint("LongLogTag")
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-//        Log.i(TAG, "onAccessibilityEvent: " + event.toString());
-        String packageName = event.getPackageName().toString();
-//        if (!packageName.equals("com.tencent.mm")) {
-//            return;
-//        }
-
+        Log.i(TAG, "onAccessibilityEvent: " + event.toString());
+        String packageName = "";
         int eventType = event.getEventType();
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED: //WINDOWS_CHANGE_ACTIVE
+                packageName = event.getPackageName().toString();
                 Log.i(TAG, packageName + " onAccessibilityEvent: TYPE_WINDOW_STATE_CHANGED");
                 Bitmap bmScreenShot;
                 try {
@@ -42,9 +39,11 @@ public class BabyAccessibilityService extends AccessibilityService {
 
                 break;
             case AccessibilityEvent.TYPE_WINDOWS_CHANGED:
+                packageName = event.getPackageName().toString();
                 Log.i(TAG,  packageName + " onAccessibilityEvent: TYPE_WINDOWS_CHANGED");
                 break;
             case AccessibilityEvent.WINDOWS_CHANGE_FOCUSED:
+                packageName = event.getPackageName().toString();
                 Log.i(TAG,  packageName + " onAccessibilityEvent: WINDOWS_CHANGE_FOCUSED");
                 break;
         }
