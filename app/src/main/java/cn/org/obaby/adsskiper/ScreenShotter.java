@@ -122,7 +122,7 @@ public class ScreenShotter {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private VirtualDisplay virtualDisplay() {
-        return mMediaProjection.createVirtualDisplay("screen-mirror",
+        return mMediaProjection.createVirtualDisplay("baby-screen-mirror",
                 getScreenWidth(),
                 getScreenHeight(),
                 Resources.getSystem().getDisplayMetrics().densityDpi,
