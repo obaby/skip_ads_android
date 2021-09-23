@@ -28,4 +28,7 @@ https://github.com/goodbranch/ScreenCapture
 https://github.com/tyhjh/ScreenShot
 https://www.jianshu.com/p/8a428fb45098
 https://github.com/BruceWind/AndroidScreenShot_SysApi
-https://www.jianshu.com/p/4ae89e1fb36a
+https://www.jianshu.com/p/4ae89e1fb36a  
+
+部分代码引用自(感谢作者 LnJan)：  
+https://github.com/LnJan/WechatLuckyMoneyGetter/  
