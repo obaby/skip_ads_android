@@ -5,4 +5,5 @@
     android:canRetrieveWindowContent="true"
     android:notificationTimeout="1000"
     android:canPerformGestures="true"
-    android:description="@string/app_description"/>
+    android:description="@string/app_description"
+    android:settingsActivity="cn.org.obaby.adsskiper.MainActivity" />

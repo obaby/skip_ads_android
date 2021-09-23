@@ -9,6 +9,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n ○ 狠戳插件开关\n ○ 回到微信聊天\n ○ 坐等红包进账\n\n 遇到问题, 欢迎通过 GitHub Issue 反馈~\n https://github.com/LnJan/WechatLuckyMoneyGetter</string>
+    <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n 1） 打开zapping，允许app录屏\n 2） 进入系统设置->辅助功能->无障碍->已安装的服务，找到广告自动跳过服务 开启\n 3）切换到其他app就可以自动跳过广告啦\n 4）为保证服务稳定，请允许zapping后台运行\n\n 遇到问题, 欢迎通过 GitHub Issue 反馈~\n https://github.com/obaby/skip_ads_android \n\n ---------------------------\n obaby@mars \n http://www.h4ck.org.cn \n http://www.obaby.org.cn \n ---------------------------</string>
 
 </resources>
