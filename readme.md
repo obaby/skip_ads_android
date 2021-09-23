@@ -3,9 +3,9 @@ Android Skip Ads Yolov5 Project
 ----
 ---
 
-![access](screenshots/logo.jpg)  
-![skip ads](screenshots/adskipper.jpg)  
-![notice](screenshots/settings.jpg)  
+![access](screenshots/logo.jpg =300)  
+![skip ads](screenshots/adskipper.jpg =300)  
+![notice](screenshots/settings.jpg =300)  
 
 安卓apk开屏广告跳过按钮识别项目
 
