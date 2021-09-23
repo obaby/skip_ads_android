@@ -3,8 +3,7 @@ Skip Ads Android Project
 ----
 ---
 
-![access](screenshots/logo.jpg)  
-![skip ads](screenshots/adskipper.jpg)  
+![skip ads](screenshots/adsskiper.jpg)  
 ![notice](screenshots/settings.jpg)  
 
 安卓apk开屏广告跳过按钮识别项目
