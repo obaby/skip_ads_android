@@ -1,5 +1,5 @@
 ----
-Android Skip Ads Yolov5 Project
+Skip Ads Android Project
 ----
 ---
 
