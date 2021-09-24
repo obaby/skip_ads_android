@@ -34,7 +34,7 @@
                 android:textColor="#F1A6A6" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/service_switch"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_weight="1"

@@ -7,6 +7,11 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="turn_on_toast">点击「无障碍-广告自动跳过服务」开启插件</string>
+    <string name="turn_off_toast">点击「无障碍-广告自动跳过服务」关闭插件</string>
+    <string name="turn_on_error_toast">遇到一些问题,请手动打开系统设置>无障碍服务>广告自动跳过服务(ฅ´ω`ฅ)</string>
+
+
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n 1） 打开zapping，允许app录屏\n 2） 进入系统设置->辅助功能->无障碍->已安装的服务，找到广告自动跳过服务 开启\n 3）切换到其他app就可以自动跳过广告啦\n 4）为保证服务稳定，请允许zapping后台运行\n\n 遇到问题, 欢迎通过 GitHub Issue 反馈~\n https://github.com/obaby/skip_ads_android \n\n ---------------------------\n obaby@mars \n http://www.h4ck.org.cn \n http://www.obaby.org.cn \n ---------------------------</string>

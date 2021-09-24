@@ -3,9 +3,11 @@ package cn.org.obaby.adsskiper;
 import static com.yorhp.recordlibrary.ScreenRecordActivity.REQUEST_MEDIA_PROJECTION;
 
 import android.Manifest;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
@@ -15,6 +17,10 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.preference.CheckBoxPreference;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.app.ActivityCompat;
@@ -28,11 +34,19 @@ import cn.org.obaby.adsskiper.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.Switch;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements AccessibilityManager.AccessibilityStateChangeListener{
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private Switch service_switch;
+    private SharedPreferences mSharedPreferences;
+    private AccessibilityManager accessibilityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +76,21 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
         }
 
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //监听AccessibilityService 变化
+        accessibilityManager = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+        if (accessibilityManager != null) {
+            accessibilityManager.addAccessibilityStateChangeListener(this);
+        }
+
+        service_switch = findViewById(R.id.service_switch);
+        service_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAccessibility();
+            }
+        });
         requestScreenShot();
     }
 
@@ -123,5 +152,112 @@ public class MainActivity extends AppCompatActivity {
 
         return (MediaProjectionManager) getSystemService(
                 Context.MEDIA_PROJECTION_SERVICE);
+    }
+
+    private void openAccessibility() {
+        try {
+            if (service_switch.isChecked()) {
+                Toast.makeText(this, getString(R.string.turn_on_toast), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.turn_off_toast), Toast.LENGTH_SHORT).show();
+            }
+            Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(accessibleIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, getString(R.string.turn_on_error_toast), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 更新当前 HongbaoService 显示状态
+     */
+    private void updateServiceStatus() {
+        SharedPreferences.Editor editor=mSharedPreferences.edit();
+        if (isServiceEnabled()) {
+        //if (enabled("aa")) {
+            service_switch.setChecked(true);
+            editor.putBoolean("HongBaoServiceEnable",true);
+        } else {
+            service_switch.setChecked(false);
+            editor.putBoolean("HongBaoServiceEnable",false);
+        }
+        editor.apply();
+    }
+
+    /**
+     * 获取 HongbaoService 是否启用状态
+     *
+     * @return
+     */
+    private boolean isServiceEnabled() {
+        return checkStealFeature1("cn.org.obaby.adsskiper/cn.org.obaby.adsskiper.BabyAccessibilityService");
+    }
+    private boolean isServiceEnabled1() {
+        List<AccessibilityServiceInfo> accessibilityServices =
+                accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        for (AccessibilityServiceInfo info : accessibilityServices) {
+            if (info.getId().equals(getPackageName() + "/.BabyAccessibilityService")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isServiceInstalled(String name) {
+        AccessibilityManager am = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> serviceInfos = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        List<AccessibilityServiceInfo> installedAccessibilityServiceList = am.getInstalledAccessibilityServiceList();
+        for (AccessibilityServiceInfo info : installedAccessibilityServiceList) {
+            Log.d("MainActivity", "all -->" + info.getId());
+            if (name.equals(info.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkStealFeature1(String service) {
+        int ok = 0;
+        try {
+            ok = Settings.Secure.getInt(getApplicationContext().getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        TextUtils.SimpleStringSplitter ms = new TextUtils.SimpleStringSplitter(':');
+        if (ok == 1) {
+            String settingValue = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (settingValue != null) {
+                ms.setString(settingValue);
+                while (ms.hasNext()) {
+                    String accessibilityService = ms.next();
+                    if (accessibilityService.equalsIgnoreCase(service)) {
+                        return true;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateServiceStatus();
+    }
+
+    @Override
+    protected void onDestroy() {
+        accessibilityManager.removeAccessibilityStateChangeListener(this);
+        Log.e("MainActivity", "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onAccessibilityStateChanged(boolean enabled) {
+        updateServiceStatus();
     }
 }
