@@ -3,6 +3,7 @@
 //
 // This source code is licensed under the BSD-style license found in the
 // LICENSE file in the root directory of this source tree.
+// https://blog.csdn.net/djstavaV/article/details/118078013
 
 package cn.org.obaby.adsskiper.yolo;
 
@@ -36,8 +37,8 @@ public class PrePostProcessor {
 
     // model output is of size 25200*85
     private static int mOutputRow = 25200; // as decided by the YOLOv5 model for input image of size 640*640
-    private static int mOutputColumn = 85; // left, top, right, bottom, score and 80 class probability
-    private static float mThreshold = 0.30f; // score above which a detection is generated
+    private static int mOutputColumn = 6; // left, top, right, bottom, score and 80 class probability
+    private static float mThreshold = 0.05f; // score above which a detection is generated
     private static int mNmsLimit = 15;
 
     static String[] mClasses;
@@ -140,7 +141,7 @@ public class PrePostProcessor {
                 }
 
                 Rect rect = new Rect((int)(startX+ivScaleX*left), (int)(startY+top*ivScaleY), (int)(startX+ivScaleX*right), (int)(startY+ivScaleY*bottom));
-                Result result = new Result(cls, outputs[i*85+4], rect);
+                Result result = new Result(cls, outputs[i*6+4], rect);
                 results.add(result);
             }
         }
