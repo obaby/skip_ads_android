@@ -33,20 +33,23 @@ import androidx.navigation.ui.NavigationUI;
 
 import cn.org.obaby.adsskiper.databinding.ActivityMainBinding;
 import cn.org.obaby.adsskiper.yolo.TorchModule;
+import cn.org.obaby.adsskiper.yolo.YoloMainActivity;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AccessibilityManager.AccessibilityStateChangeListener{
+public class MainActivity extends AppCompatActivity implements AccessibilityManager.AccessibilityStateChangeListener {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private Switch service_switch;
+    private Button buttonStartYolo;
     private SharedPreferences mSharedPreferences;
     private AccessibilityManager accessibilityManager;
     private String TAG = "MainActivity";
@@ -94,9 +97,20 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
                 openAccessibility();
             }
         });
+
+        buttonStartYolo = findViewById(R.id.buttonStartYolo);
+        buttonStartYolo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(MainActivity.this, YoloMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         requestScreenShot();
 
-        Log.i(TAG, "onCreate: "+ TorchModule.getInstance().printTorchModule());;
+        Log.i(TAG, "onCreate: " + TorchModule.getInstance().printTorchModule());
+        ;
     }
 
     @Override
@@ -180,14 +194,14 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
      * 更新当前 HongbaoService 显示状态
      */
     private void updateServiceStatus() {
-        SharedPreferences.Editor editor=mSharedPreferences.edit();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
         if (isServiceEnabled()) {
-        //if (enabled("aa")) {
+            //if (enabled("aa")) {
             service_switch.setChecked(true);
-            editor.putBoolean("HongBaoServiceEnable",true);
+            editor.putBoolean("HongBaoServiceEnable", true);
         } else {
             service_switch.setChecked(false);
-            editor.putBoolean("HongBaoServiceEnable",false);
+            editor.putBoolean("HongBaoServiceEnable", false);
         }
         editor.apply();
     }
@@ -200,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     private boolean isServiceEnabled() {
         return checkStealFeature1("cn.org.obaby.adsskiper/cn.org.obaby.adsskiper.BabyAccessibilityService");
     }
+
     private boolean isServiceEnabled1() {
         List<AccessibilityServiceInfo> accessibilityServices =
                 accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
