@@ -4,6 +4,7 @@ import static com.yorhp.recordlibrary.ScreenRecordActivity.REQUEST_MEDIA_PROJECT
 
 import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import cn.org.obaby.adsskiper.databinding.ActivityMainBinding;
+import cn.org.obaby.adsskiper.yolo.TorchModule;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     private Switch service_switch;
     private SharedPreferences mSharedPreferences;
     private AccessibilityManager accessibilityManager;
+    private String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
             }
         });
         requestScreenShot();
+
+        Log.i(TAG, "onCreate: "+ TorchModule.getInstance().printTorchModule());;
     }
 
     @Override
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     /**
      * 申请屏幕录取权限
      */
+    @SuppressLint("WrongConstant")
     private void requestScreenShot() {
         startActivityForResult(
                 ((MediaProjectionManager) this.getSystemService("media_projection")).createScreenCaptureIntent(),
