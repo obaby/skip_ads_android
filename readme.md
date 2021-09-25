@@ -35,3 +35,5 @@ https://github.com/LnJan/WechatLuckyMoneyGetter/
 https://github.com/DefTruth/lite.ai.toolkit/blob/main/docs/ort/ort_yolov5.zh.md  
 https://blog.csdn.net/santanan/article/details/113686650  
 https://zhuanlan.zhihu.com/p/361782496  
+
+https://pytorch.org/tutorials/recipes/mobile_interpreter.html  

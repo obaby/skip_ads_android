@@ -43,7 +43,7 @@ import cn.org.obaby.adsskiper.R;
 
 public class YoloMainActivity extends AppCompatActivity implements Runnable {
     private int mImageIndex = 0;
-    private String[] mTestImages = {"test1.jpg", "test2.jpg", "test3.jpg", "test4.jpg"};
+    private String[] mTestImages = {"test1.jpg", "test2.jpg", "test3.jpg", "test4.jpg", "test5.jpg"};
     private String TAG = "YoloMainActivity";
 
     private ImageView mImageView;
