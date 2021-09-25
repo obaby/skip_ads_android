@@ -21,6 +21,7 @@ import cn.org.obaby.adsskiper.LuckyMoneyTinkerApplication;
 public class TorchModule {
     private static TorchModule instance = null;
     public Module mModule = null;
+    private List<String> mClasses = null;
 
     private TorchModule() {
         if (mModule == null) {
@@ -32,6 +33,7 @@ public class TorchModule {
                 while ((line = br.readLine()) != null) {
                     classes.add(line);
                 }
+                mClasses = classes;
                 PrePostProcessor.mClasses = new String[classes.size()];
                 classes.toArray(PrePostProcessor.mClasses);
             } catch (IOException e) {
@@ -68,5 +70,9 @@ public class TorchModule {
 
     public String printTorchModule(){
         return mModule.toString();
+    }
+
+    public List<String> getmClasses() {
+        return mClasses;
     }
 }
