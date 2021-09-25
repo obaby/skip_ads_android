@@ -31,3 +31,7 @@ https://www.jianshu.com/p/4ae89e1fb36a
 
 部分代码引用自(感谢作者 LnJan)：  
 https://github.com/LnJan/WechatLuckyMoneyGetter/  
+
+https://github.com/DefTruth/lite.ai.toolkit/blob/main/docs/ort/ort_yolov5.zh.md  
+https://blog.csdn.net/santanan/article/details/113686650  
+https://zhuanlan.zhihu.com/p/361782496  
