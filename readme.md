@@ -37,3 +37,10 @@ https://blog.csdn.net/santanan/article/details/113686650
 https://zhuanlan.zhihu.com/p/361782496  
 
 https://pytorch.org/tutorials/recipes/mobile_interpreter.html  
+
+ncnn模式：  
+https://blog.csdn.net/liang_xiao_yun/article/details/112324991  
+https://blog.csdn.net/qq_37874136/article/details/111361999  
+https://zhuanlan.zhihu.com/p/275989233  
+https://blog.csdn.net/weixin_46502301/article/details/118395689  
+https://github.com/Tencent/ncnn/releases  
