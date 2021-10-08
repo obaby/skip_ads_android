@@ -36,6 +36,10 @@
 
         </activity>
 
+        <activity android:name=".detection.TfMainActivity">
+            android:theme="@style/Theme.AdsSkiper.NoActionBar">
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
