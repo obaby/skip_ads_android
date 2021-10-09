@@ -43,7 +43,7 @@ import cn.org.obaby.adsskiper.R;
 
 public class YoloMainActivity extends AppCompatActivity implements Runnable {
     private int mImageIndex = 0;
-    private String[] mTestImages = {"test1.jpg", "test2.jpg", "test3.jpg", "test4.jpg", "test5.jpg"};
+    private String[] mTestImages = {"test1.jpg", "test2.jpg", "test3.jpg", "test4.jpg", "test5.jpg", "test6.jpg", "test7.jpg"};
     private String TAG = "YoloMainActivity";
 
     private ImageView mImageView;
@@ -100,12 +100,14 @@ public class YoloMainActivity extends AppCompatActivity implements Runnable {
         mResultView.setVisibility(View.INVISIBLE);
 
         final Button buttonTest = findViewById(R.id.testButton);
-        buttonTest.setText(("Test Image 1/3"));
+
+        buttonTest.setText(String.format("IMAGE %d/%d", mImageIndex + 1, mTestImages.length));
+//        buttonTest.setText(("Test Image 1/3"));
         buttonTest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mResultView.setVisibility(View.INVISIBLE);
                 mImageIndex = (mImageIndex + 1) % mTestImages.length;
-                buttonTest.setText(String.format("Text Image %d/%d", mImageIndex + 1, mTestImages.length));
+                buttonTest.setText(String.format("Image %d/%d", mImageIndex + 1, mTestImages.length));
 
                 try {
                     mBitmap = BitmapFactory.decodeStream(getAssets().open(mTestImages[mImageIndex]));

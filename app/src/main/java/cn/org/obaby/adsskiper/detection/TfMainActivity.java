@@ -36,7 +36,8 @@ import java.util.List;
 public class TfMainActivity extends AppCompatActivity {
 
     public static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
-    private String[] mTestImages = {"kite1.jpg", "kite2.jpg", "kite3.jpg", "kite4.jpg", "kite5.jpg"};
+//    private String[] mTestImages = {"kite1.jpg", "kite2.jpg", "kite3.jpg", "kite4.jpg", "kite5.jpg"};
+    private String[] mTestImages =  {"test1.jpg", "test2.jpg", "test3.jpg", "test4.jpg", "test5.jpg", "test6.jpg", "test7.jpg"};
     private int mImageIndex = 0;
 
     @Override
@@ -48,6 +49,7 @@ public class TfMainActivity extends AppCompatActivity {
         detectButton = findViewById(R.id.detectButton);
         imageView = findViewById(R.id.imageView);
         nextButton = findViewById(R.id.buttonNext);
+        nextButton.setText(String.format("IMAGE %d/%d", mImageIndex + 1, mTestImages.length));
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
