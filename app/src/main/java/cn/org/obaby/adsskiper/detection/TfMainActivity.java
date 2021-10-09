@@ -174,8 +174,8 @@ public class TfMainActivity extends AppCompatActivity {
         final Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1.0f);
-        paint.setTextSize(36.0f);
+        paint.setStrokeWidth(1.2f);
+        paint.setTextSize(40.0f);
 
         final List<Classifier.Recognition> mappedRecognitions =
                 new LinkedList<Classifier.Recognition>();
@@ -195,10 +195,12 @@ public class TfMainActivity extends AppCompatActivity {
 //                result.setLocation(location);
 //                mappedRecognitions.add(result);
                 Log.i("CONFIDENCE", "handleResult: "+ result.getConfidence());
+                paint.setStyle(Paint.Style.FILL_AND_STROKE);
                 canvas.drawText("skip:" + result.getConfidence(),
                         location.left,
                         location.top,
                         paint);
+                paint.setStyle(Paint.Style.STROKE);
             }
         }
 //        tracker.trackResults(mappedRecognitions, new Random().nextInt());
