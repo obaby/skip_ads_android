@@ -1,0 +1,11 @@
+com/example/appinfosdk/BuildConfig.java
+ com.example.appinfosdk.BuildConfig
+com/example/appinfosdk/controller/model/AppInfo.java
+ com.example.appinfosdk.controller.model.AppInfo
+ com.example.appinfosdk.controller.model.AppInfo$1
+com/example/appinfosdk/controller/broadcastReceiver/AppInstallUninstallReceiver.java
+ com.example.appinfosdk.controller.broadcastReceiver.AppInstallUninstallReceiver
+com/example/appinfosdk/controller/services/CheckAppInstallService.java
+ com.example.appinfosdk.controller.services.CheckAppInstallService
+com/example/appinfosdk/controller/AppinfoSDK.java
+ com.example.appinfosdk.controller.AppinfoSDK
