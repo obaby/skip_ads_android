@@ -44,3 +44,7 @@ https://blog.csdn.net/qq_37874136/article/details/111361999
 https://zhuanlan.zhihu.com/p/275989233  
 https://blog.csdn.net/weixin_46502301/article/details/118395689  
 https://github.com/Tencent/ncnn/releases  
+
+
+获取安装app列表：
+https://github.com/PavitraSahu/GetAppList.git
