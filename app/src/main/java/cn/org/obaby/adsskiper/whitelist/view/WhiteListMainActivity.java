@@ -110,6 +110,11 @@ public class WhiteListMainActivity extends AppCompatActivity {
         if (id == R.id.action_search) {
             return true;
         }
+        // https://blog.csdn.net/he__xu/article/details/90723851
+        if (id == android.R.id.home) {
+            this.finish(); // back button
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
