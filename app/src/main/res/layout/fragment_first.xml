@@ -115,6 +115,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="31dp"
+                android:layout_marginTop="10dp"
                 android:text="YoloV5配置"
                 android:textColor="#FC8682" />
 
@@ -186,5 +187,48 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="白名单设置"
+                android:textColor="#FC8682" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewWhitelist"
+                    android:layout_width="293dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="修改白名单" />
+
+                <Button
+                    android:id="@+id/buttonWhitelist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="设置" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

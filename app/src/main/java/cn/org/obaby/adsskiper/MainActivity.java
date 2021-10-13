@@ -33,6 +33,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import cn.org.obaby.adsskiper.databinding.ActivityMainBinding;
 import cn.org.obaby.adsskiper.detection.TfMainActivity;
+import cn.org.obaby.adsskiper.whitelist.view.WhiteListMainActivity;
 import cn.org.obaby.adsskiper.yolo.TorchModule;
 import cn.org.obaby.adsskiper.yolo.YoloMainActivity;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private Switch service_switch;
-    private Button buttonStartYolo, buttonStartTfLite;
+    private Button buttonStartYolo, buttonStartTfLite, buttonStartWhitelist;
     private SharedPreferences mSharedPreferences;
     private AccessibilityManager accessibilityManager;
     private String TAG = "MainActivity";
@@ -113,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(MainActivity.this, TfMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonStartWhitelist = findViewById(R.id.buttonWhitelist);
+        buttonStartWhitelist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(MainActivity.this, WhiteListMainActivity.class);
                 startActivity(intent);
             }
         });

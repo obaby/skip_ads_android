@@ -4,8 +4,8 @@
 4
 5    <uses-sdk
 6        android:minSdkVersion="16"
-6-->/Users/zhongming/AndroidStudioProjects/GetAppList/AppInfoSDK/src/main/AndroidManifest.xml
+6-->/Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
 7        android:targetSdkVersion="30" />
-7-->/Users/zhongming/AndroidStudioProjects/GetAppList/AppInfoSDK/src/main/AndroidManifest.xml
+7-->/Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
 8
 9</manifest>

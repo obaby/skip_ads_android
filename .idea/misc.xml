@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-anydpi/ic_search.xml" value="0.21770833333333334" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21770833333333334" />
         <entry key="app/src/main/res/drawable-v24/item_selector.xml" value="0.21770833333333334" />
         <entry key="app/src/main/res/drawable/bottom_sheet_bg.xml" value="0.21770833333333334" />
@@ -15,13 +16,16 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19114583333333332" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/activity_main_tf.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_main_whitelist.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/activity_yolo_main.xml" value="2.5" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.19114583333333332" />
+        <entry key="app/src/main/res/layout/content_main_whitelist.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/deviceview_row.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.20540540540540542" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.2015625" />
+        <entry key="app/src/main/res/layout/item.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/layout_baby_main.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/preference_checkbox.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.2015625" />
