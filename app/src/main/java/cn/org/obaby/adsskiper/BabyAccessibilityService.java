@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.example.appinfosdk.controller.AppinfoSDK;
 import com.yorhp.recordlibrary.OnScreenShotListener;
 import com.yorhp.recordlibrary.ScreenRecordUtil;
 
@@ -25,6 +26,12 @@ public class BabyAccessibilityService extends AccessibilityService {
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED: //WINDOWS_CHANGE_ACTIVE
                 packageName = event.getPackageName().toString();
+
+                if (!AppinfoSDK.getAppinfoSDK().isInWhiteList(packageName)){
+                    Log.i(TAG, "onAccessibilityEvent: in White list," + packageName);
+                    return;
+                }
+
                 Log.i(TAG, packageName + " onAccessibilityEvent: TYPE_WINDOW_STATE_CHANGED");
                 Bitmap bmScreenShot;
                 try {
@@ -40,7 +47,7 @@ public class BabyAccessibilityService extends AccessibilityService {
                 break;
             case AccessibilityEvent.TYPE_WINDOWS_CHANGED:
                 packageName = event.getPackageName().toString();
-                Log.i(TAG,  packageName + " onAccessibilityEvent: TYPE_WINDOWS_CHANGED");
+//                Log.i(TAG,  packageName + " onAccessibilityEvent: TYPE_WINDOWS_CHANGED");
                 break;
             case AccessibilityEvent.WINDOWS_CHANGE_FOCUSED:
                 packageName = event.getPackageName().toString();
