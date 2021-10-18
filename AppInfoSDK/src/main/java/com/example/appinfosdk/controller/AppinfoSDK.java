@@ -1,10 +1,12 @@
 package com.example.appinfosdk.controller;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -17,7 +19,9 @@ import com.example.appinfosdk.controller.model.AppInfo;
 import com.example.appinfosdk.controller.services.CheckAppInstallService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.content.Intent.CATEGORY_LAUNCHER;
 
@@ -28,18 +32,26 @@ public class AppinfoSDK {
     private static AppinfoSDK appinfoSDK;
     private Context context;
 
-    private AppinfoSDK(){}
+    public Set<String> appListSet = null;
+    public final String WHITE_LIST = "white_list";
+    public final String APP_LIST_KEY = "app_list_key";
+    private final String TAG = "AppinfoSDK";
 
-    public static AppinfoSDK getAppinfoSDK(){
-        if(appinfoSDK==null){
+    private AppinfoSDK() {
+    }
+
+    public static AppinfoSDK getAppinfoSDK() {
+        if (appinfoSDK == null) {
             appinfoSDK = new AppinfoSDK();
         }
         return appinfoSDK;
     }
 
-    public void initializeSdk(Context context){
+    public void initializeSdk(Context context) {
         this.context = context;
         createNotificationChannel(context);
+        this.appListSet = getWhiteAppListSet();
+        printAppListSet();
     }
 
     private void createNotificationChannel(Context context) {
@@ -54,16 +66,80 @@ public class AppinfoSDK {
         }
     }
 
-    public void registerForAppInstallUninstallEvents(Context context){
+    public void registerForAppInstallUninstallEvents(Context context) {
         Intent serviceIntent = new Intent(context, CheckAppInstallService.class);
         serviceIntent.putExtra("inputExtra", "passing any text");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ContextCompat.startForegroundService(context, serviceIntent);
-        }
-        else {
+        } else {
             context.startService(serviceIntent);
         }
     }
+
+    public Boolean isInWhiteList(String appBundleID) {
+        if (appListSet == null){
+            return false;
+        }
+        if (appListSet.contains(appBundleID)) {
+            return true;
+        }
+        return false;
+    }
+
+    public Set<String> getWhiteAppListSet() {
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+        Set<String> tmpSet = preferences.getStringSet(APP_LIST_KEY, null);
+        appListSet = tmpSet;
+        return tmpSet;
+    }
+
+    public void printAppListSet() {
+        Log.i(TAG, "printAppListSet: ");
+        if (appListSet == null) {
+            Log.i(TAG, "set is null ");
+        } else {
+            for (String s : appListSet) {
+                Log.i(TAG, "\t" + s);
+            }
+        }
+    }
+
+    @SuppressLint("MutatingSharedPrefs")
+    public void addAppToWhiteList(String appBundleID) {
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+        Set<String> tmpSet = preferences.getStringSet(APP_LIST_KEY, null);
+        if (tmpSet == null) {
+            tmpSet = new HashSet<>();
+        } else {
+            tmpSet = new HashSet<>(tmpSet);
+        }
+        tmpSet.add(appBundleID);
+        appListSet = tmpSet;
+        SharedPreferences.Editor keyEditor = preferences.edit();
+        keyEditor.putStringSet(APP_LIST_KEY, tmpSet);
+        keyEditor.apply();
+        Log.i(TAG, "addAppToWhiteList: " + appBundleID);
+    }
+
+    @SuppressLint("MutatingSharedPrefs")
+    public void removeAppFromWhiteList(String appBundleID) {
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+        Set<String> tmpSet = preferences.getStringSet(APP_LIST_KEY, null);
+        if (tmpSet == null) {
+            tmpSet = new HashSet<>();
+        } else {
+            tmpSet = new HashSet<>(tmpSet);
+        }
+        if (tmpSet.contains(appBundleID)) {
+            tmpSet.remove(appBundleID);
+        }
+        appListSet = tmpSet;
+        SharedPreferences.Editor keyEditor = preferences.edit();
+        keyEditor.putStringSet(APP_LIST_KEY, tmpSet);
+        keyEditor.apply();
+        Log.i(TAG, "removeAppFromWhiteList: " + appBundleID);
+    }
+
 
     public ArrayList<AppInfo> getInstalledApps(boolean getSysPackages, boolean onlyLaunchableApps) {
         ArrayList<AppInfo> res = new ArrayList<>();
@@ -88,12 +164,12 @@ public class AppinfoSDK {
                 newInfo.versionCode = p.versionCode;
                 newInfo.isSystemPackage = isSystemPackage(p);
                 newInfo.icon = p.applicationInfo.loadIcon(context.getPackageManager());
-//                newInfo.isInWhiteList = true;
+                newInfo.isInWhiteList = isInWhiteList(p.packageName);
                 newInfo.print();
                 String className = "NA";
-                if(intent!=null && intent.getComponent()!=null){
+                if (intent != null && intent.getComponent() != null) {
                     className = intent.getComponent().getShortClassName();
-                    className = className.substring(className.lastIndexOf(".")+1);
+                    className = className.substring(className.lastIndexOf(".") + 1);
                 }
                 newInfo.launcherClassName = className;//p.applicationInfo.className;
                 res.add(newInfo);
@@ -116,8 +192,10 @@ public class AppinfoSDK {
         return ((pkgInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
 
-    /** Open another app.
-     * @param context current Context, like Activity, App, or Service
+    /**
+     * Open another app.
+     *
+     * @param context     current Context, like Activity, App, or Service
      * @param packageName the full package name of the app to open
      * @return true if likely successful, false if unsuccessful
      */

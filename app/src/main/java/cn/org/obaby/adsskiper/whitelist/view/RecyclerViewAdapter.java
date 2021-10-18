@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appinfosdk.controller.AppinfoSDK;
 import com.example.appinfosdk.controller.model.AppInfo;
+
 import cn.org.obaby.adsskiper.R;
 import cn.org.obaby.adsskiper.whitelist.controller.MainActivityListener;
 import cn.org.obaby.adsskiper.databinding.ItemBinding;
@@ -54,8 +56,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 Toast.makeText(context, appInfo.appname, Toast.LENGTH_LONG).show();
                 Log.v(TAG, appInfo.appname);
                 Switch sw = view.findViewById(R.id.switchWhiteList);
-                sw.setChecked(!sw.isChecked());
+
+//                sw.setChecked(!sw.isChecked());
 //                AppinfoSDK.getAppinfoSDK().openApp(context, appInfo.pname);
+                if (AppinfoSDK.getAppinfoSDK().isInWhiteList(appInfo.pname)) {
+                    AppinfoSDK.getAppinfoSDK().removeAppFromWhiteList(appInfo.pname);
+                    sw.setChecked(false);
+                } else {
+                    AppinfoSDK.getAppinfoSDK().addAppToWhiteList(appInfo.pname);
+                    sw.setChecked(true);
+                }
             }
         });
     }
@@ -100,12 +110,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class RecyclerViewViewHolder extends RecyclerView.ViewHolder {
         ItemBinding itemBinding;
 
-        public RecyclerViewViewHolder(ItemBinding itemBinding){
+        public RecyclerViewViewHolder(ItemBinding itemBinding) {
             super(itemBinding.getRoot());
             this.itemBinding = itemBinding;
         }
 
-        public void bind(AppInfo obj){
+        public void bind(AppInfo obj) {
             itemBinding.setAppInfo(obj);
             itemBinding.executePendingBindings();
         }

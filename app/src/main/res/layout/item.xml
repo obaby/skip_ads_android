@@ -101,6 +101,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:checked="@={appInfo.isInWhiteList}"
+                    android:onClick="@{(view) -> listener.appInfoListItemClicked(view, appInfo)}"
                     android:gravity="right" />
             </RelativeLayout>
         </LinearLayout>

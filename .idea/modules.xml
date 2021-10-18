@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Ads_Skiper.iml" filepath="$PROJECT_DIR$/.idea/modules/Ads_Skiper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AppInfoSDK/Ads_Skiper.AppInfoSDK.iml" filepath="$PROJECT_DIR$/.idea/modules/AppInfoSDK/Ads_Skiper.AppInfoSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Ads_Skiper.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Ads_Skiper.app.iml" />
     </modules>
   </component>

@@ -1,25 +1,25 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml:2:1-5:12
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml:2:1-5:12
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml:2:1-5:12
+ADDED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml:2:1-5:12
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml:2:1-5:12
 	package
-		ADDED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml:3:5-37
-		INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-		INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
+		ADDED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml:3:5-37
+		INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+		INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml:2:11-69
+		ADDED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml:2:11-69
 uses-sdk
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-		ADDED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-		INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
+		INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+		ADDED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+		INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-		ADDED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
-		INJECTED from F:\android_projects\skip_ads_android\AppInfoSDK\src\main\AndroidManifest.xml
+		INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+		ADDED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
+		INJECTED from /Users/zhongming/AndroidStudioProjects/AdsSkiper/AppInfoSDK/src/main/AndroidManifest.xml
