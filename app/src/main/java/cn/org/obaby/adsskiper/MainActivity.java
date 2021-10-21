@@ -14,6 +14,7 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.xw.repo.BubbleSeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     private SharedPreferences mSharedPreferences;
     private AccessibilityManager accessibilityManager;
     private String TAG = "MainActivity";
+    private BubbleSeekBar bSeekBar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,20 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
                 startActivity(intent);
             }
         });
+
+        bSeekBar = findViewById(R.id.bSeekBar);
+        bSeekBar.getConfigBuilder()
+                .min(1)
+                .max(100)
+                .progress(1)
+                .sectionCount(100)
+//                .showSectionText()
+//                .showThumbText()
+//                .bubbleTextSize(18)
+//                .autoAdjustSectionMark()
+//                .sectionTextPosition(BubbleSeekBar.TextPosition.BELOW_SECTION_MARK)
+                .seekBySection()
+                .build();
 
         requestScreenShot();
 

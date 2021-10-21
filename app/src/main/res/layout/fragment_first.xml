@@ -123,12 +123,25 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="智能识别置信度" />
+                android:text="智能识别置信度(比分比)" />
 
-            <SeekBar
-                android:id="@+id/seekBar"
+            <com.xw.repo.BubbleSeekBar
+                android:id="@+id/bSeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="38dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:bsb_bubble_color="@color/pink_500"
+                app:bsb_bubble_text_color="@color/colorPrimaryDark"
+                app:bsb_max="100"
+                app:bsb_min="1"
+                app:bsb_progress="0"
+                app:bsb_second_track_color="@color/pink_500"
+                app:bsb_section_count="100"
+                app:bsb_section_text_position="bottom_sides"
+                app:bsb_show_progress_in_float="false"
+                app:bsb_show_section_text="true"
+                app:bsb_show_thumb_text="true"
+                app:bsb_track_color="@color/pink_500"/>
 
         </LinearLayout>
 

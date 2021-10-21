@@ -66,4 +66,6 @@ dependencies {
     // Glide dependency
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    implementation 'com.xw.repo:bubbleseekbar:3.20'
 }
