@@ -171,6 +171,7 @@ public class BabyAccessibilityService extends AccessibilityService {
     }
 
     // https://codelabs.developers.google.com/codelabs/developing-android-a11y-service/#7
+    // https://developer.android.com/guide/topics/ui/accessibility/service#fingerprint
     @SuppressLint("LongLogTag")
     private void doClick(int x, int y){
         Path swipePath = new Path();
