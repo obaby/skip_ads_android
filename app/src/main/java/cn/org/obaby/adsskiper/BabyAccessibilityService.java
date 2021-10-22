@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
 
 import com.example.appinfosdk.controller.AppinfoSDK;
 import com.yorhp.recordlibrary.OnScreenShotListener;
@@ -15,8 +16,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import cn.org.obaby.adsskiper.detection.env.Logger;
+import cn.org.obaby.adsskiper.detection.tflite.Classifier;
+import cn.org.obaby.adsskiper.detection.tflite.YoloV5Classifier;
+
 public class BabyAccessibilityService extends AccessibilityService {
     final private String TAG = "BabyAccessibilityService";
+
+    private Classifier detector;
+    public static final int TF_OD_API_INPUT_SIZE = 640;
+    private static final boolean TF_OD_API_IS_QUANTIZED = false;
+    private static final String TF_OD_API_MODEL_FILE = "yolov5s-fp16.tflite";
+    private static final String TF_OD_API_LABELS_FILE = "file:///android_asset/coco.txt";
+
+
     @SuppressLint("LongLogTag")
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -88,4 +101,33 @@ public class BabyAccessibilityService extends AccessibilityService {
 
         return savePicPath;
     }
+
+    /**
+     * 当启动服务的时候就会被调用,系统成功绑定该服务时被触发，也就是当你在设置中开启相应的服务，
+     * 系统成功的绑定了该服务时会触发，通常我们可以在这里做一些初始化操作
+     */
+    @SuppressLint("LongLogTag")
+    @Override
+    protected void onServiceConnected() {
+        super.onServiceConnected();
+        Log.i(TAG, "onServiceConnected: called");
+        try {
+            detector =
+                    YoloV5Classifier.create(
+                            getAssets(),
+                            TF_OD_API_MODEL_FILE,
+                            TF_OD_API_LABELS_FILE,
+                            TF_OD_API_IS_QUANTIZED,
+                            TF_OD_API_INPUT_SIZE);
+            Log.i(TAG,"yolov5 init success");
+        } catch (final IOException e) {
+            Log.e(TAG, "Exception initializing classifier!");
+            e.printStackTrace();
+            Toast toast =
+                    Toast.makeText(
+                            getApplicationContext(), "Classifier could not be initialized", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
 }
