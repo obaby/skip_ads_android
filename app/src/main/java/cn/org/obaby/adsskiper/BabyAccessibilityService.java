@@ -3,6 +3,11 @@ package cn.org.obaby.adsskiper;
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.os.Handler;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
@@ -15,8 +20,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import cn.org.obaby.adsskiper.detection.env.Logger;
+import cn.org.obaby.adsskiper.detection.env.Utils;
 import cn.org.obaby.adsskiper.detection.tflite.Classifier;
 import cn.org.obaby.adsskiper.detection.tflite.YoloV5Classifier;
 
@@ -28,6 +36,7 @@ public class BabyAccessibilityService extends AccessibilityService {
     private static final boolean TF_OD_API_IS_QUANTIZED = false;
     private static final String TF_OD_API_MODEL_FILE = "yolov5s-fp16.tflite";
     private static final String TF_OD_API_LABELS_FILE = "file:///android_asset/coco.txt";
+    public static float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
 
 
     @SuppressLint("LongLogTag")
@@ -55,6 +64,20 @@ public class BabyAccessibilityService extends AccessibilityService {
                 }
                 if (bmScreenShot!=null) {
                     SaveBitmapToLocal(bmScreenShot);
+                    Handler handler = new Handler();
+
+                    Bitmap finalBmScreenShot = bmScreenShot;
+                    new Thread(() -> {
+                        Bitmap cropBitmap = Utils.processBitmap(finalBmScreenShot, TF_OD_API_INPUT_SIZE);
+                        final List<Classifier.Recognition> results = detector.recognizeImage(cropBitmap);
+                        Bitmap paintBitmap = finalBmScreenShot.copy(Bitmap.Config.ARGB_8888, true);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleResult(paintBitmap, results);
+                            }
+                        });
+                    }).start();
                 }
 
                 break;
@@ -71,6 +94,43 @@ public class BabyAccessibilityService extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
+
+    }
+
+    private void handleResult(Bitmap bitmap, List<Classifier.Recognition> results) {
+        final Canvas canvas = new Canvas(bitmap);
+        final Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(1.2f);
+        paint.setTextSize(40.0f);
+
+        final List<Classifier.Recognition> mappedRecognitions =
+                new LinkedList<Classifier.Recognition>();
+
+        for (final Classifier.Recognition result : results) {
+            final RectF location = result.getLocation();
+            if (location != null && result.getConfidence() >= MINIMUM_CONFIDENCE_TF_OD_API) {
+                RectF paintLocation = location;
+                paintLocation.left = location.left/640 * bitmap.getWidth();
+                paintLocation.top = location.top/640 * bitmap.getHeight();
+                paintLocation.right = location.right/640 *bitmap.getWidth();
+                paintLocation.bottom = location.bottom/640 *bitmap.getHeight();
+
+                canvas.drawRect(location, paint);
+//                cropToFrameTransform.mapRect(location);
+//
+//                result.setLocation(location);
+//                mappedRecognitions.add(result);
+                Log.i("CONFIDENCE", "handleResult: "+ result.getConfidence());
+                paint.setStyle(Paint.Style.FILL_AND_STROKE);
+                canvas.drawText("skip:" + result.getConfidence(),
+                        location.left,
+                        location.top,
+                        paint);
+                paint.setStyle(Paint.Style.STROKE);
+            }
+        }
 
     }
 
@@ -110,6 +170,8 @@ public class BabyAccessibilityService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
+        MINIMUM_CONFIDENCE_TF_OD_API = AppinfoSDK.getAppinfoSDK().getPredictCondifence() / 100;
+        Log.i(TAG, String.format("onServiceConnected: set MINIMUM_CONFIDENCE_TF_OD_API = %.4f",MINIMUM_CONFIDENCE_TF_OD_API));
         Log.i(TAG, "onServiceConnected: called");
         try {
             detector =
@@ -129,5 +191,4 @@ public class BabyAccessibilityService extends AccessibilityService {
             toast.show();
         }
     }
-
 }

@@ -38,6 +38,8 @@ public class AppinfoSDK {
     public final String PREDICT_CONFIDENCE_KEY = "predict_confidence_key";
     private final String TAG = "AppinfoSDK";
     public float predictCondifence = 0.70f;
+    public boolean isDebug = false;
+    public final String IS_DEBUG_KEY = "is_debug_key";
 
     private AppinfoSDK() {
     }
@@ -105,9 +107,23 @@ public class AppinfoSDK {
     public void setPredictCondifence(float pc){
         predictCondifence = pc / 100;
         SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
-//        float tpc = preferences.getFloat(PREDICT_CONFIDENCE_KEY, 0.70f);
         SharedPreferences.Editor keyEditor = preferences.edit();
         keyEditor.putFloat(PREDICT_CONFIDENCE_KEY,predictCondifence);
+        keyEditor.apply();
+    }
+
+    public boolean getIsDebugEnable(){
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+        boolean ts = preferences.getBoolean(IS_DEBUG_KEY, false);
+        isDebug = ts;
+        return ts;
+    }
+
+    public void setIsDebugEnable(boolean is){
+        isDebug = is;
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+        SharedPreferences.Editor keyEditor = preferences.edit();
+        keyEditor.putBoolean(IS_DEBUG_KEY,isDebug);
         keyEditor.apply();
     }
 

@@ -19,7 +19,6 @@ import com.xw.repo.BubbleSeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -172,6 +171,22 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
                 Log.i(TAG, "getProgressOnFinally: "+ String.format(" int = %d", progress) + String.format(" float = %f", progressFloat));
                 AppinfoSDK.getAppinfoSDK().setPredictCondifence(progressFloat);
                 textViewOnficende.setText(String.format("智能识别置信度 (%.1f %%)", progressFloat));
+            }
+        });
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switchIsDebug = findViewById(R.id.switchIsDebug);
+        boolean isDebug = AppinfoSDK.getAppinfoSDK().getIsDebugEnable();
+        switchIsDebug.setChecked(isDebug);
+        switchIsDebug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AppinfoSDK.getAppinfoSDK().getIsDebugEnable()){
+                    switchIsDebug.setChecked(false);
+                    AppinfoSDK.getAppinfoSDK().setIsDebugEnable(false);
+                }else{
+                    switchIsDebug.setChecked(true);
+                    AppinfoSDK.getAppinfoSDK().setIsDebugEnable(true);
+                }
             }
         });
 
