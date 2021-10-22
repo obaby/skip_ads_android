@@ -38,6 +38,8 @@ public class BabyAccessibilityService extends AccessibilityService {
     private static final String TF_OD_API_LABELS_FILE = "file:///android_asset/coco.txt";
     private static float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
     private boolean isDebugEnable = false;
+    private AppinfoSDK appinfoSDK;
+
 
     @SuppressLint("LongLogTag")
     @Override
@@ -49,7 +51,7 @@ public class BabyAccessibilityService extends AccessibilityService {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED: //WINDOWS_CHANGE_ACTIVE
                 packageName = event.getPackageName().toString();
 
-                if (!AppinfoSDK.getAppinfoSDK().isInWhiteList(packageName)){
+                if (AppinfoSDK.getAppinfoSDK().isInWhiteList(packageName)){
                     Log.i(TAG, "onAccessibilityEvent: in White list," + packageName);
                     return;
                 }
@@ -63,7 +65,9 @@ public class BabyAccessibilityService extends AccessibilityService {
                     bmScreenShot = null;
                 }
                 if (bmScreenShot!=null) {
-                    SaveBitmapToLocal(bmScreenShot);
+                    if (isDebugEnable){
+                        SaveBitmapToLocal(bmScreenShot, "");
+                    }
                     Handler handler = new Handler();
 
                     Bitmap finalBmScreenShot = bmScreenShot;
@@ -131,7 +135,9 @@ public class BabyAccessibilityService extends AccessibilityService {
                 paint.setStyle(Paint.Style.STROKE);
             }
         }
-
+        if (isDebugEnable){
+            SaveBitmapToLocal(bitmap, "_Predicted");
+        }
     }
 
     /**
@@ -140,8 +146,9 @@ public class BabyAccessibilityService extends AccessibilityService {
      * @param bmp
      */
     @SuppressLint("LongLogTag")
-    private void SaveBitmapToLocal(Bitmap bmp) {
-        String strSavePath = getExternalCacheDir().getAbsolutePath() + File.separator + java.util.UUID.randomUUID().toString() + ".jpg";
+    private void SaveBitmapToLocal(Bitmap bmp, String predictedTail) {
+
+        String strSavePath = getExternalCacheDir().getAbsolutePath() + File.separator + java.util.UUID.randomUUID().toString() + predictedTail + ".jpg";
         try {
             File f = new File(strSavePath);
             if (f.createNewFile()) {
@@ -170,6 +177,10 @@ public class BabyAccessibilityService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
+
+        appinfoSDK = AppinfoSDK.getAppinfoSDK();
+        appinfoSDK.initializeSdk(getApplicationContext());
+
         MINIMUM_CONFIDENCE_TF_OD_API = AppinfoSDK.getAppinfoSDK().getPredictCondifence() / 100;
         isDebugEnable = AppinfoSDK.getAppinfoSDK().getIsDebugEnable();
         Log.i(TAG, "-------------------------------------------------------------------------------------");
