@@ -120,10 +120,10 @@
                 android:textColor="#FC8682" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/textViewConfidence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="智能识别置信度(比分比)" />
+                android:text="智能识别置信度(百分比 %)" />
 
             <com.xw.repo.BubbleSeekBar
                 android:id="@+id/bSeekBar"
@@ -134,7 +134,7 @@
                 app:bsb_bubble_text_color="@color/colorPrimaryDark"
                 app:bsb_max="100"
                 app:bsb_min="1"
-                app:bsb_progress="0"
+                app:bsb_progress="1"
                 app:bsb_second_track_color="@color/pink_500"
                 app:bsb_section_count="100"
                 app:bsb_section_text_position="bottom_sides"

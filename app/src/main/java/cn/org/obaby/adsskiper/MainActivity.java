@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 
+import com.example.appinfosdk.controller.AppinfoSDK;
 import com.google.android.material.snackbar.Snackbar;
 import com.xw.repo.BubbleSeekBar;
 
@@ -43,6 +44,7 @@ import android.view.MenuItem;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -57,10 +59,16 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     private AccessibilityManager accessibilityManager;
     private String TAG = "MainActivity";
     private BubbleSeekBar bSeekBar ;
+    private AppinfoSDK appinfoSDK;
+    private TextView textViewOnficende;
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        appinfoSDK = AppinfoSDK.getAppinfoSDK();
+        appinfoSDK.initializeSdk(getApplicationContext());
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -129,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
             }
         });
 
+        textViewOnficende = findViewById(R.id.textViewConfidence);
+
         bSeekBar = findViewById(R.id.bSeekBar);
         bSeekBar.getConfigBuilder()
                 .min(1)
@@ -142,6 +152,28 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
 //                .sectionTextPosition(BubbleSeekBar.TextPosition.BELOW_SECTION_MARK)
                 .seekBySection()
                 .build();
+        float cf = AppinfoSDK.getAppinfoSDK().getPredictCondifence();
+        Log.i(TAG, String.format("onCreate: cf=%f",cf));
+        textViewOnficende.setText(String.format("智能识别置信度 (%.1f %%)", cf));
+        bSeekBar.setProgress(AppinfoSDK.getAppinfoSDK().getPredictCondifence());
+        bSeekBar.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
+            @Override
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+
+            }
+
+            @Override
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
+
+            }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                Log.i(TAG, "getProgressOnFinally: "+ String.format(" int = %d", progress) + String.format(" float = %f", progressFloat));
+                AppinfoSDK.getAppinfoSDK().setPredictCondifence(progressFloat);
+                textViewOnficende.setText(String.format("智能识别置信度 (%.1f %%)", progressFloat));
+            }
+        });
 
         requestScreenShot();
 

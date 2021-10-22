@@ -35,7 +35,9 @@ public class AppinfoSDK {
     public Set<String> appListSet = null;
     public final String WHITE_LIST = "white_list";
     public final String APP_LIST_KEY = "app_list_key";
+    public final String PREDICT_CONFIDENCE_KEY = "predict_confidence_key";
     private final String TAG = "AppinfoSDK";
+    public float predictCondifence = 0.70f;
 
     private AppinfoSDK() {
     }
@@ -91,6 +93,22 @@ public class AppinfoSDK {
         Set<String> tmpSet = preferences.getStringSet(APP_LIST_KEY, null);
         appListSet = tmpSet;
         return tmpSet;
+    }
+
+    public float getPredictCondifence(){
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+        float tpc = preferences.getFloat(PREDICT_CONFIDENCE_KEY, 0.70f) * 100;
+        predictCondifence = tpc;
+        return predictCondifence;
+    }
+
+    public void setPredictCondifence(float pc){
+        predictCondifence = pc / 100;
+        SharedPreferences preferences = context.getSharedPreferences(WHITE_LIST, Context.MODE_PRIVATE);
+//        float tpc = preferences.getFloat(PREDICT_CONFIDENCE_KEY, 0.70f);
+        SharedPreferences.Editor keyEditor = preferences.edit();
+        keyEditor.putFloat(PREDICT_CONFIDENCE_KEY,predictCondifence);
+        keyEditor.apply();
     }
 
     public void printAppListSet() {
