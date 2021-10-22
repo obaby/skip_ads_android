@@ -1,11 +1,13 @@
 package cn.org.obaby.adsskiper;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.util.Log;
@@ -86,7 +88,7 @@ public class BabyAccessibilityService extends AccessibilityService {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    handleResult(paintBitmap, results);
+                                    handleResult(paintBitmap, results,finalPackageName);
                                 }
                             });
                         }else{
@@ -123,6 +125,7 @@ public class BabyAccessibilityService extends AccessibilityService {
 
     }
 
+    @SuppressLint("LongLogTag")
     public Classifier.Recognition getBestResult(List<Classifier.Recognition> results){
         Classifier.Recognition ret=null;
         float conf = 0.f;
@@ -136,7 +139,8 @@ public class BabyAccessibilityService extends AccessibilityService {
         return ret;
     }
 
-    private void doGuesture(Bitmap bitmap,List<Classifier.Recognition> results, String packageName){
+    @SuppressLint("LongLogTag")
+    private void doGuesture(Bitmap bitmap, List<Classifier.Recognition> results, String packageName){
         if (!packageName.equals(lastApp)){
             Log.i(TAG, "doGuesture: app has changed, stop now.");
             return;
@@ -156,12 +160,37 @@ public class BabyAccessibilityService extends AccessibilityService {
                     paintLocation.top = location.top / 640 * bitmap.getHeight();
                     paintLocation.right = location.right / 640 * bitmap.getWidth();
                     paintLocation.bottom = location.bottom / 640 * bitmap.getHeight();
+                    int x = (int) paintLocation.centerX();
+                    int y = (int) paintLocation.centerY();
+                    doClick(x,y);
+                }else {
+                    Log.i(TAG, "doGuesture: location is null or confidence to low");
                 }
             }
         }
     }
 
-    private void handleResult(Bitmap bitmap, List<Classifier.Recognition> results) {
+    @SuppressLint("LongLogTag")
+    private void doClick(int x, int y){
+        Path swipePath = new Path();
+//        swipePath.moveTo(1000, 1000);
+//        swipePath.lineTo(100, 1000);
+        swipePath.moveTo(x,y);
+        Log.i(TAG, String.format("doClick: try to click at: x = %d, y = %d.", x, y));
+        GestureDescription.Builder gestureBuilder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            gestureBuilder = new GestureDescription.Builder();
+            gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, 500));
+            dispatchGesture(gestureBuilder.build(), null, null);
+        }
+    }
+
+    @SuppressLint("LongLogTag")
+    private void handleResult(Bitmap bitmap, List<Classifier.Recognition> results, String packageName) {
+        if (!packageName.equals(lastApp)){
+            Log.i(TAG, "doGuesture: app has changed, stop now.");
+            return;
+        }
         final Canvas canvas = new Canvas(bitmap);
         final Paint paint = new Paint();
         paint.setColor(Color.RED);
