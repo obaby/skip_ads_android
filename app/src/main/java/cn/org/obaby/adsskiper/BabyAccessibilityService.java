@@ -58,8 +58,8 @@ public class BabyAccessibilityService extends AccessibilityService {
                     Log.i(TAG, "onAccessibilityEvent: in White list," + packageName);
                     return;
                 }
-                // com.huawei.android.launcher
-               if (packageName.contains(".launcher")){
+                // com.huawei.android.launcher  com.android.systemui
+               if (packageName.contains(".launcher")| packageName.contains(".systemui")){
                    Log.i(TAG, "onAccessibilityEvent: maybe system launcher");
                    return;
                }
