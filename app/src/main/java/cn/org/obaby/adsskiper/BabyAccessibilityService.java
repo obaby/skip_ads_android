@@ -36,8 +36,8 @@ public class BabyAccessibilityService extends AccessibilityService {
     private static final boolean TF_OD_API_IS_QUANTIZED = false;
     private static final String TF_OD_API_MODEL_FILE = "yolov5s-fp16.tflite";
     private static final String TF_OD_API_LABELS_FILE = "file:///android_asset/coco.txt";
-    public static float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
-
+    private static float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
+    private boolean isDebugEnable = false;
 
     @SuppressLint("LongLogTag")
     @Override
@@ -171,8 +171,11 @@ public class BabyAccessibilityService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         MINIMUM_CONFIDENCE_TF_OD_API = AppinfoSDK.getAppinfoSDK().getPredictCondifence() / 100;
-        Log.i(TAG, String.format("onServiceConnected: set MINIMUM_CONFIDENCE_TF_OD_API = %.4f",MINIMUM_CONFIDENCE_TF_OD_API));
+        isDebugEnable = AppinfoSDK.getAppinfoSDK().getIsDebugEnable();
+        Log.i(TAG, "-------------------------------------------------------------------------------------");
         Log.i(TAG, "onServiceConnected: called");
+        Log.i(TAG, String.format("onServiceConnected: set MINIMUM_CONFIDENCE_TF_OD_API = %.4f",MINIMUM_CONFIDENCE_TF_OD_API));
+        Log.i(TAG, String.format("onServiceConnected: set isDebugEnable = %b",isDebugEnable));
         try {
             detector =
                     YoloV5Classifier.create(
@@ -190,5 +193,6 @@ public class BabyAccessibilityService extends AccessibilityService {
                             getApplicationContext(), "Classifier could not be initialized", Toast.LENGTH_SHORT);
             toast.show();
         }
+        Log.i(TAG, "-------------------------------------------------------------------------------------");
     }
 }
