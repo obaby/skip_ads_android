@@ -93,6 +93,10 @@ public class BabyAccessibilityService extends AccessibilityService {
                 packageName = event.getPackageName().toString();
                 Log.i(TAG,  packageName + " onAccessibilityEvent: WINDOWS_CHANGE_FOCUSED");
                 break;
+            case AccessibilityEvent.WINDOWS_CHANGE_ADDED:
+                packageName = event.getPackageName().toString();
+                Log.i(TAG,  packageName + " onAccessibilityEvent: WINDOWS_CHANGE_ADDED");
+                break;
         }
     }
 
@@ -120,12 +124,7 @@ public class BabyAccessibilityService extends AccessibilityService {
                 paintLocation.top = location.top/640 * bitmap.getHeight();
                 paintLocation.right = location.right/640 *bitmap.getWidth();
                 paintLocation.bottom = location.bottom/640 *bitmap.getHeight();
-
                 canvas.drawRect(location, paint);
-//                cropToFrameTransform.mapRect(location);
-//
-//                result.setLocation(location);
-//                mappedRecognitions.add(result);
                 Log.i("CONFIDENCE", "handleResult: "+ result.getConfidence());
                 paint.setStyle(Paint.Style.FILL_AND_STROKE);
                 canvas.drawText("skip:" + result.getConfidence(),
