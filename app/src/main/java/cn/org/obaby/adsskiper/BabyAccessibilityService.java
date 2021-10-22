@@ -39,20 +39,26 @@ public class BabyAccessibilityService extends AccessibilityService {
     private static float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
     private boolean isDebugEnable = false;
     private AppinfoSDK appinfoSDK;
+    private String lastApp="";
 
 
     @SuppressLint("LongLogTag")
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        Log.i(TAG, "onAccessibilityEvent: " + event.toString());
+//        Log.i(TAG, "onAccessibilityEvent: " + event.toString());
         String packageName = "";
         int eventType = event.getEventType();
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED: //WINDOWS_CHANGE_ACTIVE
                 packageName = event.getPackageName().toString();
-
+                lastApp = packageName;
                 if (AppinfoSDK.getAppinfoSDK().isInWhiteList(packageName)){
                     Log.i(TAG, "onAccessibilityEvent: in White list," + packageName);
+                    return;
+                }
+                // com.huawei.android.launcher
+                if (packageName.contains("launcher")){
+                    Log.i(TAG, "onAccessibilityEvent: maybe system launcher");
                     return;
                 }
 
@@ -71,16 +77,26 @@ public class BabyAccessibilityService extends AccessibilityService {
                     Handler handler = new Handler();
 
                     Bitmap finalBmScreenShot = bmScreenShot;
+                    String finalPackageName = packageName;
                     new Thread(() -> {
                         Bitmap cropBitmap = Utils.processBitmap(finalBmScreenShot, TF_OD_API_INPUT_SIZE);
                         final List<Classifier.Recognition> results = detector.recognizeImage(cropBitmap);
                         Bitmap paintBitmap = finalBmScreenShot.copy(Bitmap.Config.ARGB_8888, true);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                handleResult(paintBitmap, results);
-                            }
-                        });
+                        if (isDebugEnable){
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    handleResult(paintBitmap, results);
+                                }
+                            });
+                        }else{
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    doGuesture(paintBitmap, results, finalPackageName);
+                                }
+                            });
+                        }
                     }).start();
                 }
 
@@ -103,6 +119,44 @@ public class BabyAccessibilityService extends AccessibilityService {
     @Override
     public void onInterrupt() {
 
+    }
+
+    public Classifier.Recognition getBestResult(List<Classifier.Recognition> results){
+        Classifier.Recognition ret=null;
+        float conf = 0.f;
+        for (final Classifier.Recognition result : results) {
+            if (result.getConfidence() > conf) {
+                ret = result;
+                conf = result.getConfidence();
+            }
+        }
+        Log.i(TAG, "getBestResult: " + ret.toString());
+        return ret;
+    }
+
+    private void doGuesture(Bitmap bitmap,List<Classifier.Recognition> results, String packageName){
+        if (!packageName.equals(lastApp)){
+            Log.i(TAG, "doGuesture: app has changed, stop now.");
+            return;
+        }
+        //默认返回已经排序，无需再次排序
+        if (results.isEmpty()){
+            Log.i(TAG, "doGuesture: result is empty");
+        }else {
+            Classifier.Recognition result = results.get(0);
+            Log.i(TAG, "doGuesture: best = " + result.toString());
+            if (result != null) {
+                final RectF location = result.getLocation();
+                if (location != null && result.getConfidence() >= MINIMUM_CONFIDENCE_TF_OD_API) {
+                    // todo: 需要判断location位置是否在中间
+                    RectF paintLocation = location;
+                    paintLocation.left = location.left / 640 * bitmap.getWidth();
+                    paintLocation.top = location.top / 640 * bitmap.getHeight();
+                    paintLocation.right = location.right / 640 * bitmap.getWidth();
+                    paintLocation.bottom = location.bottom / 640 * bitmap.getHeight();
+                }
+            }
+        }
     }
 
     private void handleResult(Bitmap bitmap, List<Classifier.Recognition> results) {
