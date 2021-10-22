@@ -57,10 +57,10 @@ public class BabyAccessibilityService extends AccessibilityService {
                     return;
                 }
                 // com.huawei.android.launcher
-                if (packageName.contains("launcher")){
-                    Log.i(TAG, "onAccessibilityEvent: maybe system launcher");
-                    return;
-                }
+               if (packageName.contains(".launcher")){
+                   Log.i(TAG, "onAccessibilityEvent: maybe system launcher");
+                   return;
+               }
 
                 Log.i(TAG, packageName + " onAccessibilityEvent: TYPE_WINDOW_STATE_CHANGED");
                 Bitmap bmScreenShot;
@@ -98,6 +98,8 @@ public class BabyAccessibilityService extends AccessibilityService {
                             });
                         }
                     }).start();
+                }else{
+                    Log.i(TAG, "onAccessibilityEvent: screenshot failed.");
                 }
 
                 break;
