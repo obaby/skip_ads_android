@@ -231,6 +231,7 @@ public class BabyAccessibilityService extends AccessibilityService {
 
     /**
      * 反射大法调用Surface|SurfaceControl的screenshot方法
+     * https://www.demo2s.com/android/android-surfacecontrol-screenshot-ibinder-display-surface-consumer.html
      * 参考安卓源码：
      * sdk >  17: https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/SurfaceControl.java
      * sdk <= 17: https://android.googlesource.com/platform/frameworks/base/+/android-4.2.2_r1.2/core/java/android/view/Surface.java
