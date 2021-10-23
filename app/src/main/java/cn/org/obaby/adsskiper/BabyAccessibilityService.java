@@ -15,17 +15,13 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.example.appinfosdk.controller.AppinfoSDK;
-import com.yorhp.recordlibrary.OnScreenShotListener;
-import com.yorhp.recordlibrary.ScreenRecordUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.org.obaby.adsskiper.detection.env.Logger;
 import cn.org.obaby.adsskiper.detection.env.Utils;
 import cn.org.obaby.adsskiper.detection.tflite.Classifier;
 import cn.org.obaby.adsskiper.detection.tflite.YoloV5Classifier;
@@ -41,7 +37,7 @@ public class BabyAccessibilityService extends AccessibilityService {
     private static float MINIMUM_CONFIDENCE_TF_OD_API = 0.05f;
     private boolean isDebugEnable = false;
     private AppinfoSDK appinfoSDK;
-    private String lastApp="";
+    private String lastApp = "";
 
 
     @SuppressLint("LongLogTag")
@@ -54,15 +50,15 @@ public class BabyAccessibilityService extends AccessibilityService {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED: //WINDOWS_CHANGE_ACTIVE
                 packageName = event.getPackageName().toString();
                 lastApp = packageName;
-                if (AppinfoSDK.getAppinfoSDK().isInWhiteList(packageName)){
+                if (AppinfoSDK.getAppinfoSDK().isInWhiteList(packageName)) {
                     Log.i(TAG, "onAccessibilityEvent: in White list," + packageName);
                     return;
                 }
                 // com.huawei.android.launcher  com.android.systemui
-               if (packageName.contains(".launcher")| packageName.contains(".systemui")){
-                   Log.i(TAG, "onAccessibilityEvent: maybe system launcher");
-                   return;
-               }
+                if (packageName.contains(".launcher") | packageName.contains(".systemui")) {
+                    Log.i(TAG, "onAccessibilityEvent: maybe system launcher");
+                    return;
+                }
 
                 Log.i(TAG, packageName + " onAccessibilityEvent: TYPE_WINDOW_STATE_CHANGED");
                 Bitmap bmScreenShot;
@@ -72,8 +68,8 @@ public class BabyAccessibilityService extends AccessibilityService {
                     e.printStackTrace();
                     bmScreenShot = null;
                 }
-                if (bmScreenShot!=null) {
-                    if (isDebugEnable){
+                if (bmScreenShot != null) {
+                    if (isDebugEnable) {
                         SaveBitmapToLocal(bmScreenShot, "");
                     }
                     Handler handler = new Handler();
@@ -84,14 +80,14 @@ public class BabyAccessibilityService extends AccessibilityService {
                         Bitmap cropBitmap = Utils.processBitmap(finalBmScreenShot, TF_OD_API_INPUT_SIZE);
                         final List<Classifier.Recognition> results = detector.recognizeImage(cropBitmap);
                         Bitmap paintBitmap = finalBmScreenShot.copy(Bitmap.Config.ARGB_8888, true);
-                        if (isDebugEnable){
+                        if (isDebugEnable) {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    handleResult(paintBitmap, results,finalPackageName);
+                                    handleResultWithDebug(paintBitmap, results, finalPackageName);
                                 }
                             });
-                        }else{
+                        } else {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -100,7 +96,7 @@ public class BabyAccessibilityService extends AccessibilityService {
                             });
                         }
                     }).start();
-                }else{
+                } else {
                     Log.i(TAG, "onAccessibilityEvent: screenshot failed.");
                 }
 
@@ -111,11 +107,11 @@ public class BabyAccessibilityService extends AccessibilityService {
                 break;
             case AccessibilityEvent.WINDOWS_CHANGE_FOCUSED:
                 packageName = event.getPackageName().toString();
-                Log.i(TAG,  packageName + " onAccessibilityEvent: WINDOWS_CHANGE_FOCUSED");
+                Log.i(TAG, packageName + " onAccessibilityEvent: WINDOWS_CHANGE_FOCUSED");
                 break;
             case AccessibilityEvent.WINDOWS_CHANGE_ADDED:
                 packageName = event.getPackageName().toString();
-                Log.i(TAG,  packageName + " onAccessibilityEvent: WINDOWS_CHANGE_ADDED");
+                Log.i(TAG, packageName + " onAccessibilityEvent: WINDOWS_CHANGE_ADDED");
                 break;
         }
     }
@@ -126,8 +122,8 @@ public class BabyAccessibilityService extends AccessibilityService {
     }
 
     @SuppressLint("LongLogTag")
-    public Classifier.Recognition getBestResult(List<Classifier.Recognition> results){
-        Classifier.Recognition ret=null;
+    public Classifier.Recognition getBestResult(List<Classifier.Recognition> results) {
+        Classifier.Recognition ret = null;
         float conf = 0.f;
         for (final Classifier.Recognition result : results) {
             if (result.getConfidence() > conf) {
@@ -140,15 +136,15 @@ public class BabyAccessibilityService extends AccessibilityService {
     }
 
     @SuppressLint("LongLogTag")
-    private void doGuesture(Bitmap bitmap, List<Classifier.Recognition> results, String packageName){
-        if (!packageName.equals(lastApp)){
+    private void doGuesture(Bitmap bitmap, List<Classifier.Recognition> results, String packageName) {
+        if (!packageName.equals(lastApp)) {
             Log.i(TAG, "doGuesture: app has changed, stop now.");
             return;
         }
         //默认返回已经排序，无需再次排序
-        if (results.isEmpty()){
+        if (results.isEmpty()) {
             Log.i(TAG, "doGuesture: result is empty");
-        }else {
+        } else {
             Classifier.Recognition result = results.get(0);
             Log.i(TAG, "doGuesture: best = " + result.toString());
             if (result != null) {
@@ -162,8 +158,8 @@ public class BabyAccessibilityService extends AccessibilityService {
                     paintLocation.bottom = location.bottom / 640 * bitmap.getHeight();
                     int x = (int) paintLocation.centerX();
                     int y = (int) paintLocation.centerY();
-                    doClick(x,y);
-                }else {
+                    doClick(x, y);
+                } else {
                     Log.i(TAG, "doGuesture: location is null or confidence to low");
                 }
             }
@@ -173,11 +169,11 @@ public class BabyAccessibilityService extends AccessibilityService {
     // https://codelabs.developers.google.com/codelabs/developing-android-a11y-service/#7
     // https://developer.android.com/guide/topics/ui/accessibility/service#fingerprint
     @SuppressLint("LongLogTag")
-    private void doClick(int x, int y){
+    private void doClick(int x, int y) {
         Path swipePath = new Path();
 //        swipePath.moveTo(1000, 1000);
 //        swipePath.lineTo(100, 1000);
-        swipePath.moveTo(x,y);
+        swipePath.moveTo(x, y);
         Log.i(TAG, String.format("doClick: try to click at: x = %d, y = %d.", x, y));
         GestureDescription.Builder gestureBuilder = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -188,11 +184,10 @@ public class BabyAccessibilityService extends AccessibilityService {
     }
 
     @SuppressLint("LongLogTag")
-    private void handleResult(Bitmap bitmap, List<Classifier.Recognition> results, String packageName) {
-        if (!packageName.equals(lastApp)){
-            Log.i(TAG, "doGuesture: app has changed, stop now.");
-            return;
-        }
+    private void handleResultWithDebug(Bitmap bitmap, List<Classifier.Recognition> results, String packageName) {
+
+        doGuesture(bitmap, results, packageName);
+
         final Canvas canvas = new Canvas(bitmap);
         final Paint paint = new Paint();
         paint.setColor(Color.RED);
@@ -204,15 +199,14 @@ public class BabyAccessibilityService extends AccessibilityService {
                 new LinkedList<Classifier.Recognition>();
 
         for (final Classifier.Recognition result : results) {
-            final RectF location = result.getLocation();
+            RectF location = result.getLocation();
             if (location != null && result.getConfidence() >= MINIMUM_CONFIDENCE_TF_OD_API) {
-                RectF paintLocation = location;
-                paintLocation.left = location.left/640 * bitmap.getWidth();
-                paintLocation.top = location.top/640 * bitmap.getHeight();
-                paintLocation.right = location.right/640 *bitmap.getWidth();
-                paintLocation.bottom = location.bottom/640 *bitmap.getHeight();
+                location.left = location.left / 640 * bitmap.getWidth();
+                location.top = location.top / 640 * bitmap.getHeight();
+                location.right = location.right / 640 * bitmap.getWidth();
+                location.bottom = location.bottom / 640 * bitmap.getHeight();
                 canvas.drawRect(location, paint);
-                Log.i("CONFIDENCE", "handleResult: "+ result.getConfidence());
+                Log.i("CONFIDENCE", "handleResult: " + result.getConfidence());
                 paint.setStyle(Paint.Style.FILL_AND_STROKE);
                 canvas.drawText("skip:" + result.getConfidence(),
                         location.left,
@@ -221,7 +215,7 @@ public class BabyAccessibilityService extends AccessibilityService {
                 paint.setStyle(Paint.Style.STROKE);
             }
         }
-        if (isDebugEnable){
+        if (isDebugEnable) {
             SaveBitmapToLocal(bitmap, "_Predicted");
         }
     }
@@ -242,14 +236,14 @@ public class BabyAccessibilityService extends AccessibilityService {
                 bmp.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
                 outStream.flush();
                 outStream.close();
-                Log.i(TAG, "SaveBitmapToLocal: "+ strSavePath);
+                Log.i(TAG, "SaveBitmapToLocal: " + strSavePath);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String takeScreenShot(){
+    private String takeScreenShot() {
         String savePicPath = "";
 
         return savePicPath;
@@ -271,8 +265,8 @@ public class BabyAccessibilityService extends AccessibilityService {
         isDebugEnable = AppinfoSDK.getAppinfoSDK().getIsDebugEnable();
         Log.i(TAG, "-------------------------------------------------------------------------------------");
         Log.i(TAG, "onServiceConnected: called");
-        Log.i(TAG, String.format("onServiceConnected: set MINIMUM_CONFIDENCE_TF_OD_API = %.4f",MINIMUM_CONFIDENCE_TF_OD_API));
-        Log.i(TAG, String.format("onServiceConnected: set isDebugEnable = %b",isDebugEnable));
+        Log.i(TAG, String.format("onServiceConnected: set MINIMUM_CONFIDENCE_TF_OD_API = %.4f", MINIMUM_CONFIDENCE_TF_OD_API));
+        Log.i(TAG, String.format("onServiceConnected: set isDebugEnable = %b", isDebugEnable));
         try {
             detector =
                     YoloV5Classifier.create(
@@ -281,7 +275,7 @@ public class BabyAccessibilityService extends AccessibilityService {
                             TF_OD_API_LABELS_FILE,
                             TF_OD_API_IS_QUANTIZED,
                             TF_OD_API_INPUT_SIZE);
-            Log.i(TAG,"yolov5 init success");
+            Log.i(TAG, "yolov5 init success");
         } catch (final IOException e) {
             Log.e(TAG, "Exception initializing classifier!");
             e.printStackTrace();

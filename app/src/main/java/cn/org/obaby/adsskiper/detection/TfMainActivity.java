@@ -181,13 +181,12 @@ public class TfMainActivity extends AppCompatActivity {
                 new LinkedList<Classifier.Recognition>();
 
         for (final Classifier.Recognition result : results) {
-            final RectF location = result.getLocation();
+            RectF location = result.getLocation();
             if (location != null && result.getConfidence() >= MINIMUM_CONFIDENCE_TF_OD_API) {
-                RectF paintLocation = location;
-                paintLocation.left = location.left/640 * bitmap.getWidth();
-                paintLocation.top = location.top/640 * bitmap.getHeight();
-                paintLocation.right = location.right/640 *bitmap.getWidth();
-                paintLocation.bottom = location.bottom/640 *bitmap.getHeight();
+                location.left = location.left/640 * bitmap.getWidth();
+                location.top = location.top/640 * bitmap.getHeight();
+                location.right = location.right/640 *bitmap.getWidth();
+                location.bottom = location.bottom/640 *bitmap.getHeight();
 
                 canvas.drawRect(location, paint);
 //                cropToFrameTransform.mapRect(location);
