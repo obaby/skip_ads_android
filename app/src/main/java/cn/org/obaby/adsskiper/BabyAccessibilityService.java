@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -19,6 +20,7 @@ import com.example.appinfosdk.controller.AppinfoSDK;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,6 +63,13 @@ public class BabyAccessibilityService extends AccessibilityService {
                 }
 
                 Log.i(TAG, packageName + " onAccessibilityEvent: TYPE_WINDOW_STATE_CHANGED");
+//
+//                Bitmap testBmp = null;
+//                testBmp = screecap(1080,1920);
+//                if (testBmp != null){
+//                    SaveBitmapToLocal(testBmp, "_scp");
+//                }
+
                 Bitmap bmScreenShot;
                 try {
                     bmScreenShot = ScreenShotter.getInstance().getScreenShotSync();
@@ -218,6 +227,39 @@ public class BabyAccessibilityService extends AccessibilityService {
         if (isDebugEnable) {
             SaveBitmapToLocal(bitmap, "_Predicted");
         }
+    }
+
+    /**
+     * 反射大法调用Surface|SurfaceControl的screenshot方法
+     * 参考安卓源码：
+     * sdk >  17: https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/SurfaceControl.java
+     * sdk <= 17: https://android.googlesource.com/platform/frameworks/base/+/android-4.2.2_r1.2/core/java/android/view/Surface.java
+     */
+    public static Bitmap screecap(int screenWidth, int screenHeight) {
+
+        String surfaceClassName = " ";
+
+        if (Build.VERSION.SDK_INT <= 17) {
+            surfaceClassName = "android.view.Surface";
+        } else {
+            surfaceClassName = "android.view.SurfaceControl";
+        }
+
+        // 关键在于此处反射调用获取bitmap
+        Bitmap bitmap = null;
+        try {
+            bitmap = (Bitmap) Class.forName(surfaceClassName).getDeclaredMethod("screenshot", new Class[]{Integer.TYPE, Integer.TYPE})
+                    .invoke(null, new Object[]{screenWidth, screenHeight});
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
     /**

@@ -27,6 +27,7 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
+        android:sharedUserId="android.uid.system"
         android:theme="@style/Theme.AdsSkiper">
 
         <activity android:name=".yolo.YoloMainActivity"
