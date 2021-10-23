@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements AccessibilityMana
     private AppinfoSDK appinfoSDK;
     private TextView textViewOnficende;
 
+
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

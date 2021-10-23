@@ -55,6 +55,10 @@ https://www.jianshu.com/p/8a428fb45098
 https://github.com/BruceWind/AndroidScreenShot_SysApi
 https://www.jianshu.com/p/4ae89e1fb36a  
 
+反射截屏：  
+http://www.wanyor.com/2018/03/12/115.html  
+https://my.oschina.net/asf/blog/4632332
+
 部分代码引用自(感谢作者 LnJan)：  
 https://github.com/LnJan/WechatLuckyMoneyGetter/  
 
