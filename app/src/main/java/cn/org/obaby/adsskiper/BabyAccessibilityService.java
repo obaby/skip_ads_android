@@ -3,6 +3,7 @@ package cn.org.obaby.adsskiper;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -262,6 +265,44 @@ public class BabyAccessibilityService extends AccessibilityService {
         }
         return bitmap;
     }
+
+    //https://www.jianshu.com/p/161486999de4
+    private Bitmap screenShotByReflect(){
+        Bitmap mScreenBitmap = null;
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+        float[] dims = { mDisplayMetrics.widthPixels,
+                mDisplayMetrics.heightPixels };
+        try {
+            Class<?> demo = Class.forName("android.view.SurfaceControl");
+            Method method = demo.getDeclaredMethod("screenshot", int.class,int.class);
+            mScreenBitmap = (Bitmap) method.invoke(null,(int) dims[0],(int) dims[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mScreenBitmap;
+    }
+
+//    public Bitmap screenshot() {
+//        Resources resources = this.getResources();
+//        DisplayMetrics dm = resources.getDisplayMetrics();
+//
+//        String surfaceClassName = "";
+//        if (Build.VERSION.SDK_INT <= 17) {
+//            surfaceClassName = "android.view.Surface";
+//        } else {
+//            surfaceClassName = "android.view.SurfaceControl";
+//        }
+//
+//        try {
+//            Class<?> c = Class.forName(surfaceClassName);
+//            Method method = c.getMethod("screenshot", new Class[]{int.class, int.class});
+//            method.setAccessible(true);
+//            return (Bitmap) method.invoke(null, dm.widthPixels, dm.heightPixels);
+//        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     /**
      * 保存图片到本地缓存目录（调试时使用）
