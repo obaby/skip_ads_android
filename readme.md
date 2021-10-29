@@ -23,7 +23,8 @@ Skip Ads Android Project
 作为安卓自动跳过广告三部曲的第二部分，主要是实现系统截屏功能。继《Android Skip Ads Yolov5 Project》之后，下一步就是获取当前屏幕的截图，把截图传入分析引擎实现广告跳过按钮的识别，最后一步是按钮点击。本项目就是最后一步对应的安卓工程。  
 
 声明：  
-该项目代码，多数出自于github上公开的代码。对于这些代码直接进行了应用修改，并不是所有代码都是我自己写的。参考的代码主要来源雨参考连接的相关内容，包括但不限于这些链接。感谢各位的开源代码！！  
+该项目代码，多数出自于github上公开的代码。对于这些代码直接进行了应用修改，并不是所有代码都是我自己写的。参考的代码主要来源雨参考连接的相关内容，包括但不限于这些链接。感谢各位的开源代码！！ 
+keystore 密码 123456 keyalias key0
 
 相关文章：  
 [http://h4ck.org.cn/2021/09/android-skip-ads-android-project/](http://h4ck.org.cn/2021/09/android-skip-ads-android-project/)  
