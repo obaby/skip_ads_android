@@ -25,3 +25,5 @@ AppInfoSDK/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-
 AppInfoSDK/build/intermediates/compiled_local_resources/debug/out/drawable-ldpi-v4_ic_launcher_background.png.flat
 AppInfoSDK/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_launcher_background.png.flat
 AppInfoSDK/build/intermediates/compiled_local_resources/debug/out/drawable-anydpi-v21_ic_launcher_background.xml.flat
+app/release/output-metadata.json
+app/release/zapping_1.0.apk
