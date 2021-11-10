@@ -76,6 +76,11 @@ https://zhuanlan.zhihu.com/p/275989233
 https://blog.csdn.net/weixin_46502301/article/details/118395689  
 https://github.com/Tencent/ncnn/releases  
 
+https://www.freesion.com/article/86251429395/  
+https://github.com/cmdbug/YOLOv5_NCNN.git  
+https://blog.csdn.net/flyfish1986/article/details/116604907  
+https://zhuanlan.zhihu.com/p/266130778  
+https://zhuanlan.zhihu.com/p/350278710  
 
 获取安装app列表：
 https://github.com/PavitraSahu/GetAppList.git
